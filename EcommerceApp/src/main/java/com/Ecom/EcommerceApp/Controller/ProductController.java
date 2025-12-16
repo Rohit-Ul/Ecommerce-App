@@ -2,9 +2,12 @@ package com.Ecom.EcommerceApp.Controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,29 +32,32 @@ public class ProductController {
 	
 	@GetMapping("/Products")
 	@ResponseBody
-	public List<Product> getProducts() {
+	public ResponseEntity<List<Product>> getProducts() {
 		System.out.println("Fetching Products...");
-		return service.getAllProducts();
+		return ResponseEntity.status(HttpStatus.OK).body(service.getAllProducts());
 	}
 	
 	@GetMapping("/Product/{id}")
-	public Product getProduct(@PathVariable int id) {
+	public ResponseEntity<Product> getProduct(@PathVariable int id) {
 		System.out.println("Finding Product....");
- 		return service.getProduct(id);
+		
+		Product res= service.getProduct(id);
+ 		return ResponseEntity.status(HttpStatus.OK).body(res);
 	}
 	
 	
 	//Product Without Image
 	@PostMapping("/x")
-	public Product addProducts(@RequestBody Product product) {
+	public ResponseEntity<?> addProducts(@RequestBody Product product) {
 		System.out.println("Adding Product..."+ product);
 		
-		return service.addProduct(product);
+		Product res=service.addProduct(product);
+		return ResponseEntity.status(HttpStatus.CREATED).body(res);
 	}
 	
 	// product with Image 
 	@PostMapping(value= "/Products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public Product addProductWithImage(@RequestPart("product") String ProductJson,@RequestPart("imagefile") MultipartFile imagefile)throws Exception {
+	public ResponseEntity<?> addProductWithImage(@RequestPart("product") String ProductJson,@RequestPart("imagefile") MultipartFile imagefile) {
 		System.out.println(ProductJson);
 		
 		//form-data always Sends data as Binary 
@@ -61,8 +67,16 @@ public class ProductController {
 		ObjectMapper mapper = new ObjectMapper();
 		Product product=mapper.readValue(ProductJson,Product.class);
 		
-		product.setImagefile(imagefile.getBytes());
-		return service.addProduct(product);
+		try {
+			product.setImagefile(imagefile.getBytes());
+			Product Saved= service.addProduct(product);
+			return ResponseEntity.status(HttpStatus.CREATED).body(Saved);
+		}
+		catch(Exception e){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map.of(new Product(),e.getMessage()));
+
+		}
+		
 	}
 	
 }
