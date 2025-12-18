@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.Ecom.EcommerceApp.model.Product;
@@ -28,6 +29,34 @@ public class ProductService {
 	public Product getProduct(int id) {
 		// TODO Auto-generated method stub
 		return repo.findById(id).orElse(new Product());	
+	}
+
+	public byte[] getImage(int productId) {
+		
+		Product product =repo.findById(productId).orElse(new Product());	
+		// TODO Auto-generated method stub
+		return product.getImagefile();
+	}
+
+	
+	public Product updatePrduct(Product product,int id) {
+		// TODO Auto-generated method stub
+		
+		System.out.println("Service -->");
+		Product Search=repo.findById(id).orElse(new Product());
+		
+		if(id==Search.getId()) {
+			
+			Search.setName(product.getName());
+			Search.setBrand(product.getBrand());
+			Search.setCategory(product.getCategory());
+			Search.setDescription(product.getDescription());
+			Search.setImagefile(product.getImagefile());
+			Search.setPrice(product.getPrice());
+			Search.setProductAvailable(product.getProductAvailable());
+			Search.setStockQuantity(product.getStockQuantity());
+		}
+		return repo.save(Search);
 	}
 
 	
