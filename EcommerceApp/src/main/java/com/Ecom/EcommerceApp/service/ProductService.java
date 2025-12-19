@@ -64,6 +64,11 @@ public class ProductService {
 		repo.deleteById(id);
 	}
 
+	public List<Product> SearchProduct(String keyword) {
+		// TODO Auto-generated method stub
+		return repo.SearchProducts(keyword);
+	}
+
 	
 	
 }

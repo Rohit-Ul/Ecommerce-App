@@ -54,6 +54,13 @@ public class ProductController {
 		return ResponseEntity.status(HttpStatus.OK).body(service.getImage(ProductId));
 		
 	}
+	
+	@GetMapping("/Product/search")
+	public ResponseEntity<List<Product>> SearchProducts(@RequestParam String keyword){
+		
+		List<Product> res=service.SearchProduct(keyword);
+	    return ResponseEntity.status(HttpStatus.OK).body(res);
+	}
 	//Product Without Image
 	@PostMapping("/x")
 	public ResponseEntity<?> addProducts(@RequestBody Product product) {
@@ -105,14 +112,22 @@ public class ProductController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Product());
 			
 		}
-		
 	}
 	
 	@DeleteMapping("/Product/{id}")
-	public ResponseEntity<?> DeleteProduct(@PathVariable int id) {
+	public ResponseEntity<String> DeleteProduct(@PathVariable int id) {
+		Product product=service.getProduct(id);
 		
-		service.DeleteProduct(id);
-		return ResponseEntity.status(HttpStatus.OK).body("Product with Id"+id+"Deleted!!");
+		if(product !=null) {
+			service.DeleteProduct(id);
+			return new ResponseEntity<>("Deleted" ,HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<>("Product Not Found" ,HttpStatus.NOT_FOUND);
+		}
+		
+		
+		
 	}
 	
 }
