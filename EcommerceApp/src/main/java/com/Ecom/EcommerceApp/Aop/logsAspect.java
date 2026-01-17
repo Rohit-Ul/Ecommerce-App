@@ -19,12 +19,12 @@ public class logsAspect {
 	
 	@Before("execution(* com.Ecom.EcommerceApp.service.*.*(..))")
 	public void BeforeMethodCall(JoinPoint jp) {
-		LOGGER.info("Method Called :"+jp.getSignature().getName());
+		LOGGER.info("Method Called ✅:"+jp.getSignature().getName());
 	}
 	
 	@After("execution(* com.Ecom.EcommerceApp.service.*.*(..))")
 	public void AfterMethodCall(JoinPoint jp) {
-		LOGGER.info("Method Ended :"+jp.getSignature().getName());
+		LOGGER.info("Method Ended ✅:"+jp.getSignature().getName());
 	}
 	
 	@AfterThrowing("execution(* com.Ecom.EcommerceApp.service.*.*(..))")
