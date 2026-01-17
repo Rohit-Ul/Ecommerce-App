@@ -60,7 +60,7 @@ public class OrderService {
 	}
 
 
-	public OrderResponse PlaceOrder(OrderRequest orderRequest) {
+	public OrderResponse placeOrder(OrderRequest orderRequest) {
 
 		// Java.util.UUID 
 		// to Generate a Unique ID 

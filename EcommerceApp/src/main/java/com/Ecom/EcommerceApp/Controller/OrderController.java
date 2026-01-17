@@ -28,7 +28,7 @@ public class OrderController {
 	@PostMapping("/orders/place")
 	public ResponseEntity<OrderResponse> PlaceOrder(@RequestBody OrderRequest orderRequest) {
 		
-		OrderResponse orderResponse=orderservice.PlaceOrder(orderRequest);
+		OrderResponse orderResponse=orderservice.placeOrder(orderRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
 	}
 	
