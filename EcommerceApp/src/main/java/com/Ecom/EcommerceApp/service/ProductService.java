@@ -17,30 +17,29 @@ public class ProductService {
 	Repo repo;
 
 	public List<Product> getAllProducts() {
-		// TODO Auto-generated method stub
+	
 		return repo.findAll();
 	}
 
 	public Product addProduct(Product product) {
-		// TODO Auto-generated method stub
+
 		return repo.save(product);
 	}
 
 	public Product getProduct(int id) {
-		// TODO Auto-generated method stub
+
 		return repo.findById(id).orElse(new Product());	
 	}
 
 	public byte[] getImage(int productId) {
 		
 		Product product =repo.findById(productId).orElse(new Product());	
-		// TODO Auto-generated method stub
+
 		return product.getImagefile();
 	}
 
 	
 	public Product updatePrduct(Product product,int id) {
-		// TODO Auto-generated method stub
 		
 		System.out.println("Service -->");
 		Product Search=repo.findById(id).orElse(new Product());
